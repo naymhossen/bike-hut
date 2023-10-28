@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { AuthContext } from "./Authprovider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 /* eslint-disable react/no-unescaped-entities */
 const Signin = () => {
   const { userSignIn } = useContext(AuthContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -12,19 +17,17 @@ const Signin = () => {
     const password = form.password.value;
     userSignIn(email, password)
       .then((res) => {
-        console.log(res.user);
-        const user = { email, lastLoginAt: res.user?.metadata?.lastSignInTime };
-        fetch("http://localhost:3000/users", {
-          method: "PATCH",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          });
+        const loggedInUser = res.user;
+        console.log(loggedInUser);
+        const user = { email };
+        // get JWT access token
+        axios.post("http://localhost:5000/jwt", user, { withCredentials: true })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.succss) {
+            navigate(location?.state ? location?.state : "/");
+          }
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -81,13 +84,13 @@ const Signin = () => {
             </div>
             <p className="px-6 text-sm text-center dark:text-gray-400">
               Don't have an account yet?
-              <a
+              <span
                 rel="noopener noreferrer"
                 href="#"
                 className="hover:underline dark:text-violet-400"
               >
-                Sign up
-              </a>
+                <Link to="/signup">Sign up</Link>
+              </span>
               .
             </p>
           </div>

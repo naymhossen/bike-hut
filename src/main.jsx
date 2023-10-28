@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Layout from "./Components/Layout/Layout";
 import Home from "./Components/Pages/Home";
-import Bikes from "./Components/Pages/Bikes";
-import Blog from "./Components/Pages/Blog";
 import Contact from "./Components/Pages/Contact";
 import Signup from "./Components/AuthBox/Signup";
 import Signin from "./Components/AuthBox/Signin";
 import Authprovider from "./Components/AuthBox/Authprovider";
-import Users from "./Components/Pages/Users";
+import CheckOut from "./Components/Pages/CheckOut";
+import Bookings from "./Components/Pages/Bookings";
+import PrivateRoute from "./Components/AuthBox/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -20,14 +20,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/allbikes",
-        element: <Bikes />,
-      },
-      {
-        path: "/blog",
-        element: <Blog />,
       },
       {
         path: "/contact",
@@ -42,9 +34,13 @@ const router = createBrowserRouter([
         element: <Signin />,
       },
       {
-        path: '/users',
-        element: <Users />,
-        loader: () => fetch('http://localhost:3000/users')
+        path: 'checkout/:id',
+        element: <PrivateRoute><CheckOut /></PrivateRoute>,
+        loader: ({params}) => fetch(`http://localhost:5000/services/${params.id}`)
+      },
+      {
+        path:'/bookings',
+        element: <PrivateRoute><Bookings /></PrivateRoute>
       }
     ],
   },

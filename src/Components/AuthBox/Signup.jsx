@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 import { AuthContext } from "./Authprovider";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const { createUser } = useContext(AuthContext);
@@ -12,26 +13,9 @@ const Signup = () => {
     const email = form.email.value;
     const password = form.password.value;
     createUser(email, password)
-      .then((res) => {
-        console.log(res.user);
-        const createAt = res.user.metadata.creationTime;
-        const lastSignInTimes = res.user.metadata.lastSignInTime;
-        const user = { email, createAt, lastSignInTimes };
-        fetch("http://localhost:3000/users", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            if (data.insertedId) {
-              alert("data added database");
-            }
-          });
-      })
+    .then( res => {
+      console.log(res);
+    })
       .catch((error) => {
         console.log(error);
       });
@@ -110,9 +94,9 @@ const Signup = () => {
         </div>
         <p className="text-xs text-center sm:px-6 dark:text-gray-400">
           Alrady have an account?
-          <a rel="noopener noreferrer" href="#" className="underline dark:text-gray-100">
-            Sign in
-          </a>
+          <span rel="noopener noreferrer" href="#" className="underline dark:text-gray-100">
+            <Link to="/signin">Sign In</Link>
+          </span>
         </p>
       </div>
     </div>

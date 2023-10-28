@@ -1,9 +1,10 @@
+import Services from "./Home/Services";
 
 
 const Home = () => {
     return (
         <div>
-            <h1>Its home pages</h1>
+            <Services />
         </div>
     );
 };
