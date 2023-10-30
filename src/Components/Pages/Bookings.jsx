@@ -9,7 +9,7 @@ const Bookings = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    axios.get(url, { withCredentials: true }).then((res) => setBookings(res.data));
+    axios.get(url).then((res) => setBookings(res.data));
   }, [url]);
 
   return (

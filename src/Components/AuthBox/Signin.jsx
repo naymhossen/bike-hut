@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "./Authprovider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 /* eslint-disable react/no-unescaped-entities */
 const Signin = () => {
@@ -19,15 +18,7 @@ const Signin = () => {
       .then((res) => {
         const loggedInUser = res.user;
         console.log(loggedInUser);
-        const user = { email };
-        // get JWT access token
-        axios.post("http://localhost:5000/jwt", user, { withCredentials: true })
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.succss) {
-            navigate(location?.state ? location?.state : "/");
-          }
-        });
+        navigate(location?.state ? location?.state : "/");
       })
       .catch((err) => {
         console.log(err);
